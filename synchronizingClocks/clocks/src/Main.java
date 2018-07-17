@@ -25,13 +25,13 @@ public class Main {
 
         startTime = System.currentTimeMillis();
         tests.printTestResult("2",
-                "" + syncClocks_A(clockStat1));
+                "" + syncClocks_B(clockStat1));
         stopTime = System.currentTimeMillis();
         System.out.println("TestCase1 time : " + (stopTime - startTime) + " miliseconds.");
 
         startTime = System.currentTimeMillis();
         tests.printTestResult("9",
-                "" + syncClocks_A(clockStat2));
+                "" + syncClocks_B(clockStat2));
         stopTime = System.currentTimeMillis();
         System.out.println("TestCase2 time : " + (stopTime - startTime) + " miliseconds.");
 
@@ -84,18 +84,30 @@ public class Main {
             buttonsLen[i] = buttons[i].length;
         }
 
-        return -1;
+        return B_recursion(initStat, 0, 0, blen, clen, buttonsLen);
     }
 
-    public static int B_recursion(Integer[] stat) {
-        return -1;
+    public static int B_recursion(Integer[] stat,int idx, int count, int blen, int clen, int[] buttonsLen) {
+        int minCount = Integer.MAX_VALUE;
+        int tmp;
+        boolean yetFinal = idx < blen - 1;
+        for(int i = 0; i < 4; i ++) {
+            pressButton(stat, buttons[idx], buttonsLen[idx], i * 3);
+            if(isSorted(stat, clen))
+                return count + i;
+            tmp = yetFinal ? B_recursion(stat, idx + 1, count + i, blen, clen, buttonsLen) : minCount;
+            if(tmp < minCount)
+                minCount = tmp;
+            resetButton(stat, buttons[idx], buttonsLen[idx],i * 3);
+        }
+        return minCount;
     }
 
 
 
     public static boolean isSorted(Integer[] currStat, int length) {
         for(int i = 0; i < length; i ++) {
-            if(currStat[i] != 12 && currStat[i] != 0) return false;
+            if(currStat[i] % 12 != 0) return false;
         }
         return true;
     }
@@ -114,7 +126,22 @@ public class Main {
 
     public static void pressButton(Integer[] stat, int[] aButton, int length) {
         for(int i = 0; i < length; i ++)
-            stat[aButton[i]] = (stat[aButton[i]] + 3) % 12;
+            stat[aButton[i]] = (stat[aButton[i]] + 3);
+    }
+
+    public static void resetButton(Integer[] stat, int[] aButton, int length) {
+        for(int i = 0; i < length; i ++)
+            stat[aButton[i]] = (stat[aButton[i]] - 3);
+    }
+
+    public static void pressButton(Integer[] stat, int[] aButton, int length, int repeat) {
+        for(int i = 0; i < length; i ++)
+            stat[aButton[i]] = (stat[aButton[i]] + repeat);
+    }
+
+    public static void resetButton(Integer[] stat, int[] aButton, int length, int repeat) {
+        for(int i = 0; i < length; i ++)
+            stat[aButton[i]] = (stat[aButton[i]] - repeat);
     }
 
     public static void printArr(Integer[] stat) {
