@@ -12,6 +12,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 */.idea
+*/*.iml
+**/*.iml
+clocks.iml
+
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -173,6 +177,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
 
 # End of https://www.gitignore.io/api/java,macos,intellij,jetbrains
